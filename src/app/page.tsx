@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import APIStatus from "@/components/APIStatus";
 
 export default function Home() {
   return (
@@ -89,6 +90,9 @@ export default function Home() {
           />
           Go to nextjs.org →
         </a>
+
+        <h1>SBS Affordability Status Fetch</h1>
+        <APIStatus/>
       </footer>
     </div>
   );
