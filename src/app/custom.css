@@ -1,0 +1,47 @@
+.formLabel {
+  text-align: right;
+  font-weight: bold;
+}
+
+.labelSubtext {
+  font-weight: normal;
+  font-size: 75%;
+}
+
+.errorFieldText {
+  color:red;
+  font-weight: bold;
+}
+.requiredAsterix {
+  color:red;
+  font-weight: bold;
+}
+.hidden {
+  display: none;;
+}
+.show {
+  display:block;
+}
+.progressText {
+  font-size:50%;
+  font-weight: normal;
+
+}
+
+#btnBack  {
+  background-color:silver; 
+  color:black; 
+  margin-right:10px;
+}
+
+.btnContainer{
+  text-align: right;
+}
+
+h1{
+  background-color: rgb(76, 28, 121);
+  color:white;
+  padding:15px;
+  text-align: center;
+}
+
