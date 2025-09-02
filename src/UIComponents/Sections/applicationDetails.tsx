@@ -1,20 +1,27 @@
-/*import SectionInfo from '@/app/appData/sectionInfo';
-import  Section  from '@/app/appData/sectionInfo';
+"use client";
+import React from 'react';
+import type {Section} from '@/app/appData/sectionInfo';
 
-const applicationDetails = ({
-    sectionInfo : Array<sa.Section> ,
-    dataAccess}) => {
-    return(
-        <h2>Application Details</h2>
-    )
+type DataAccess = {
+    application : unknown;
+    onchangeCall?: (...args: any[]) => void;
+    onvalidateCall?: (...args: any[]) => void;
 }
-*/
-const applicationDetails = ({}) => {
-    return(
-        <h2>Application Details</h2>
-    )
+type Props = {
+    sectionInfo : Section;
+    dataAccess? : DataAccess;
 }
 
-export default applicationDetails
+const ApplicationDetails: React.FC<Props> = ({
+    sectionInfo, dataAccess,
+}) =>{
+    return (
+        <section>
+            <h2>{sectionInfo.sectionTitle}</h2>
+        </section>
+    )
+}
+
+export default ApplicationDetails
 
     

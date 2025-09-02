@@ -15,11 +15,13 @@ import UpdateField from '@/app/appMethods/updateData';
 import ValidateField from '@/app/appMethods/validation';
 import DataConversion from '@/app/appMethods/dataConversion';
 
+import { getSectionById } from '@/app/appData/sectionInfo';
+
 export default function Home() {
   const [hasValidated,updateHasValidated] = useState(false);
   const [currentSection, updateCurrentSection] = useState(0);
 
-  const Sections = SectionInfo.GetSections();
+  const section0 = getSectionById(0)!;
 
   const [affordabilityApplication,
     updateAffordabilityApplication] = 
@@ -91,8 +93,7 @@ export default function Home() {
       <Header/>
       
      <p>Hello Graham</p>
-
-    <ApplicationDetails/>
+     <ApplicationDetails sectionInfo={section0}/>
 
     </div>
   );

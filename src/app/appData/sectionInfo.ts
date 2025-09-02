@@ -5,9 +5,7 @@ export interface Section {
     percentageProgress: number;
   }
 
-function GetSections(){
-
-    const sections : Section[]  =  [
+   export const sections : Section[]  =  [
         {
             id:0,
             sectionTitle:"Application Details",
@@ -35,6 +33,6 @@ function GetSections(){
         }
     ]
 
-    return sections
+export function getSectionById(id: number) : Section | undefined{
+    return sections.find((s) => s.id ===id);
 }
-export default {GetSections}
