@@ -4,13 +4,13 @@ import { useState,useEffect } from 'react'
 import Header from "@/UIComponents/pageElements/header";
 
 import ApplicationDetails from '@/UIComponents/Sections/applicationDetails';
-import sectionApplicantInfo from '@/UIComponents/Sections/applicantInfo';
-import sectionIncome from '@/UIComponents/Sections/income';
-import sectionExpenditure from '@/UIComponents/Sections/expenditure';
-import sectionResult from '@/UIComponents/Sections/result';
+import ApplicantInfo from '@/UIComponents/Sections/applicantInfo';
+import IncomeSection from '@/UIComponents/Sections/income';
+import ExpenditureISection from '@/UIComponents/Sections/expenditure';
+import ResultSection from '@/UIComponents/Sections/result';
 
-import SectionInfo from '@/app/appData/sectionInfo';
-import FormData from '@/app/appData/applicationInfo';
+
+import ApplicationInfo from '@/app/appData/applicationInfo';
 import UpdateField from '@/app/appMethods/updateData';
 import ValidateField from '@/app/appMethods/validation';
 import DataConversion from '@/app/appMethods/dataConversion';
@@ -21,11 +21,11 @@ export default function Home() {
   const [hasValidated,updateHasValidated] = useState(false);
   const [currentSection, updateCurrentSection] = useState(0);
 
-  const section0 = getSectionById(0)!;
+  const activeSection = getSectionById(currentSection)!;
 
   const [affordabilityApplication,
     updateAffordabilityApplication] = 
-      useState(FormData.GetFormData())
+      useState(ApplicationInfo.GetFormData())
   
   const fieldChange = (e : React.FormEvent<HTMLInputElement>) => {
     UpdateField(e,
@@ -81,20 +81,50 @@ export default function Home() {
       updateCurrentSection(backPage);
   }
 
-  let sectionsArray = [];
   const sectionData = {
     application:affordabilityApplication,
     onchangeCall:fieldChange,
     onvalidateCall:validateInput
   }
 
+  let SectionControls = [];
+  SectionControls.push(
+    <ApplicationDetails 
+      sectionInfo={activeSection}
+      dataAccess={sectionData}/>);
+
+  SectionControls.push(
+    <ApplicantInfo 
+      sectionInfo={activeSection}
+      dataAccess={sectionData}/>)
+  
+    SectionControls.push(
+      <IncomeSection 
+        sectionInfo={activeSection}
+        dataAccess={sectionData}/>)
+
+    SectionControls.push(
+      <ExpenditureISection 
+        sectionInfo={activeSection}
+        dataAccess={sectionData}/>)
+
+    SectionControls.push(
+      <ResultSection 
+        sectionInfo={activeSection}
+        dataAccess={sectionData}/>)
+  
   return (
     <div>
-      <Header/>
-      
-     <p>Hello Graham</p>
-     <ApplicationDetails sectionInfo={section0}/>
-
+      <header>
+        <Header/>
+      </header>
+      <section>
+        <form>
+          {
+            SectionControls[currentSection]
+          } 
+        </form>
+      </section>
     </div>
-  );
+  )
 }
