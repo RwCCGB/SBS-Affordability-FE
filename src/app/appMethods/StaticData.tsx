@@ -1,17 +1,15 @@
 import React from 'react';
 import type {DropDownItem} from '@/app/appData/DropDownItem';
+import StaticDataLib from "@/lib/staticData";
 
-function GetRegions(){
+async function GetRegions() : Promise<DropDownItem[]>{
+    const regions = await StaticDataLib.GetRegions();
 
-    let Regions = [];
-    
-    Regions.push({key:0,value:0,text:"Please select a region"})
-    Regions.push({key:1,value:1,text:"Yorkshire and Humber"})
-    Regions.push({key:2,value:2,text:"Northern Ireland"})
-    Regions.push({key:3,value:3,text:"Royal Berkshire"})
-    Regions.push({key:4,value:4,text:"London"})
-
-    return Regions;
+    return regions.map((region) => ({
+            key: region.id,
+            value: region.id,
+            text: region.name,
+        }));
 }
-
-export default {GetRegions}
+const StaticData = {GetRegions};
+export default StaticData;
