@@ -129,7 +129,7 @@ export default function Home() {
 </p>
 <p className='btnContainer'>
   <button 
-    className={currentSection > 0 ? 'display' : 'hidden'} 
+    className={currentSection > 0 && currentSection < 4 ? 'display' : 'hidden'} 
     onClick={(e => StepBack(e))}
     id="btnBack" 
     name="btnBack">

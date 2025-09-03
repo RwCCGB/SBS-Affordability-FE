@@ -28,9 +28,7 @@ const applicantInfo: React.FC<Props> = ({
     return (
          <div>
             <div className="grid">
-                <p></p>
                 <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 2 of 5</span></h2>
-                <p></p>
             </div>
             <div className="grid">
                 <p></p>
