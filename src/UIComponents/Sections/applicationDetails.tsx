@@ -40,6 +40,13 @@ const ApplicationDetails: React.FC<Props> = ({
                 onvalidate={dataAccess.onvalidateCall}
             />
 
+            <GenericTextField
+                field={dataAccess.application.filter(
+                    f => f.name == "region")}
+                onchange={dataAccess.onchangeCall}
+                onvalidate={dataAccess.onvalidateCall}
+            />
+
          </div>
     )
     }
