@@ -33,7 +33,7 @@ export default function Home() {
       updateAffordabilityApplication)
   }
 
-  const pageValidate = (e : React.FormEvent<HTMLInputElement>) => {
+  const pageValidate = (e : any) => {
     e.preventDefault();
     updateAffordabilityApplication(
       affordabilityApplication.map(
@@ -57,8 +57,8 @@ export default function Home() {
 
   const validateInput = (e : React.FormEvent<HTMLInputElement>) => 
   {
-    if(hasValidated) {
     e.preventDefault();
+    if(hasValidated) {
       updateAffordabilityApplication(
         affordabilityApplication.map(
           function(field) { return ValidateField(field, currentSection); })
@@ -74,7 +74,7 @@ export default function Home() {
         console.log(requestObject)
   }
   
-  function StepBack(e : React.FormEvent<HTMLInputElement>){
+  function StepBack(e : any){
     console.log("goin in")
     e.preventDefault();
     let backPage = currentSection - 1;
@@ -123,6 +123,29 @@ export default function Home() {
           {
             SectionControls[currentSection]
           } 
+          <div className='grid'>
+<p>
+  <p></p>
+</p>
+<p className='btnContainer'>
+  <button 
+    className={currentSection > 0 ? 'display' : 'hidden'} 
+    onClick={(e => StepBack(e))}
+    id="btnBack" 
+    name="btnBack">
+    Back
+  </button>
+  <button 
+    className={currentSection < 4 ? 'display' : 'hidden'} 
+    onClick={(e => pageValidate(e))} 
+    id="btnNext" 
+    name="btnBack">
+    Next
+  </button>
+</p>
+<p>
+</p>
+</div>
         </form>
       </section>
     </div>
