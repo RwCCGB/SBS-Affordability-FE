@@ -1,3 +1,6 @@
+body{
+  font-size:1.75em;
+}
 .formLabel {
   text-align: right;
   font-weight: bold;
@@ -43,5 +46,38 @@ h1{
   color:white;
   padding:15px;
   text-align: center;
+  
 }
+.resultTable {
+border:1px solid black;
+}
+.resultTable td {
+  border:1px solid black;
+}
+
+.resultPanel {font-size:140%;}
+
+.halfPanelLeft {
+  margin-left:50px;
+  margin-right:25px;
+}
+.halfPanelRight {
+  margin-left:25px;
+  margin-right:50px
+}
+
+button {
+  background-color: green;
+  font-size:1.2em;
+  padding:5px 20px 5px 20px;
+}
+
+h1 {
+  font-size:2em;
+}
+h2{
+  font-size:1.75em;
+  text-align:center;
+}
+
 

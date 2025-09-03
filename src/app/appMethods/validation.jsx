@@ -1,5 +1,4 @@
 function ValidateField(affordabilityField,sectionIndex){
-
     if(sectionIndex == affordabilityField.validationGroup){
     if(affordabilityField.value < affordabilityField.minAmount || 
       affordabilityField.value >= affordabilityField.maxAmount

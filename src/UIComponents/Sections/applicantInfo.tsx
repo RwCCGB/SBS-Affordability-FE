@@ -4,6 +4,10 @@ import type {Section} from '@/app/appData/sectionInfo';
 import type { formField } from '@/app/appData/applicationInfo';
 
 import GenericTextField from '../formControls/GenericTextboxControl';
+import GenericDropDownControl from '../formControls/GenericDropDownControl';
+import GenericRadioButtons from '../formControls/GenericRadioButtons';
+
+import StaticData from '@/app/appMethods/StaticData';
 
 type DataAccess = {
     application : formField[];
@@ -20,25 +24,17 @@ const applicantInfo: React.FC<Props> = ({
 }) =>{
     if(dataAccess !== undefined)
     {
+ 
     return (
          <div>
             <div className="grid">
-                <p></p>
                 <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 2 of 5</span></h2>
-                <p></p>
             </div>
             <div className="grid">
                 <p></p>
                 <p><progress value={sectionInfo.percentageProgress} max="100" /></p>
                 <p></p>
             </div>
-
-            <GenericTextField
-                field={dataAccess.application.filter(
-                    f => f.name == "purchasePrice")}
-                onchange={dataAccess.onchangeCall}
-                onvalidate={dataAccess.onvalidateCall}
-            />
 
          </div>
     )
