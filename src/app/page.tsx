@@ -16,6 +16,7 @@ import ValidateField from '@/app/appMethods/validation';
 import DataConversion from '@/app/appMethods/dataConversion';
 
 import { getSectionById } from '@/app/appData/sectionInfo';
+import APIStatus from '@/UIComponents/status/APIStatus';
 
 export default function Home() {
   const [hasValidated,updateHasValidated] = useState(false);
@@ -119,6 +120,7 @@ export default function Home() {
         <Header/>
       </header>
       <section>
+        <APIStatus/>
         <form>
           {
             SectionControls[currentSection]
