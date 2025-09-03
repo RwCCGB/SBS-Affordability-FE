@@ -80,7 +80,6 @@ const ApplicationDetails: React.FC<Props> = ({
                 onvalidate={dataAccess.onvalidateCall}
                 selectableOptions={Regions}
             />            
-
          </div>
     )
     }
