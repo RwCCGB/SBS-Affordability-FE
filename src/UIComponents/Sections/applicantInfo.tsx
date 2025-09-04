@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import type {Section} from '@/app/appData/sectionInfo';
-import type { formField } from '@/app/appData/applicationInfo';
+import type {formField} from '@/app/appData/applicationInfo';
 
 import GenericTextField from '../formControls/GenericTextboxControl';
 import GenericDropDownControl from '../formControls/GenericDropDownControl';
