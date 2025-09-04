@@ -11,5 +11,6 @@ async function GetRegions() : Promise<DropDownItem[]>{
             text: region.name,
         }));
 }
+
 const StaticData = {GetRegions};
 export default StaticData;
