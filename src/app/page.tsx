@@ -104,17 +104,21 @@ export default function Home() {
   SectionControls.push(
     <ApplicantDetails
       sectionInfo={activeSection}
-      dataAccess={sectionData}/>)
+      dataAccess={sectionData}
+      applicantsInfo={applicantData}/>)
   
     SectionControls.push(
       <IncomeSection 
         sectionInfo={activeSection}
-        dataAccess={sectionData}/>)
+        dataAccess={sectionData}
+        applicantsInfo={applicantData}/>
+    )
 
     SectionControls.push(
       <ExpenditureISection 
         sectionInfo={activeSection}
-        dataAccess={sectionData}/>)
+        dataAccess={sectionData}
+        applicantsInfo={applicantData}/>)
 
     SectionControls.push(
       <ResultSection 
