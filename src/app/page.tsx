@@ -4,7 +4,7 @@ import { useState,useEffect } from 'react'
 import Header from "@/UIComponents/pageElements/header";
 
 import ApplicationDetails from '@/UIComponents/Sections/applicationDetails';
-import ApplicantInfo from '@/UIComponents/Sections/applicantInfo';
+import ApplicantDetails from '@/UIComponents/Sections/applicantInfo';
 import IncomeSection from '@/UIComponents/Sections/income';
 import ExpenditureISection from '@/UIComponents/Sections/expenditure';
 import ResultSection from '@/UIComponents/Sections/result';
@@ -17,6 +17,8 @@ import DataConversion from '@/app/appMethods/dataConversion';
 
 import { getSectionById } from '@/app/appData/sectionInfo';
 
+import ApplicantInfo from '@/app/appData/applicantInfo';
+
 export default function Home() {
   const [hasValidated,updateHasValidated] = useState(false);
   const [currentSection, updateCurrentSection] = useState(0);
@@ -26,6 +28,12 @@ export default function Home() {
   const [affordabilityApplication,
     updateAffordabilityApplication] = 
       useState(ApplicationInfo.GetFormData())
+  
+  
+  const [applicantData,updateApplicantData] =
+      useState(ApplicantInfo.GetApplicantData())
+
+  console.log(applicantData)
   
   const fieldChange = (e : React.FormEvent<HTMLInputElement>) => {
     UpdateField(e,
@@ -94,7 +102,7 @@ export default function Home() {
       dataAccess={sectionData}/>);
 
   SectionControls.push(
-    <ApplicantInfo 
+    <ApplicantDetails
       sectionInfo={activeSection}
       dataAccess={sectionData}/>)
   
