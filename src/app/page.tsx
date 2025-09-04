@@ -16,6 +16,7 @@ import ValidateField from '@/app/appMethods/validation';
 import DataConversion from '@/app/appMethods/dataConversion';
 
 import { getSectionById } from '@/app/appData/sectionInfo';
+import APIStatus from '@/UIComponents/status/APIStatus';
 import ApplicantInfo from '@/app/appData/applicantInfo';
 
 export default function Home() {
@@ -126,6 +127,7 @@ export default function Home() {
         <Header/>
       </header>
       <section>
+        <APIStatus/>
         <form>
           {
             SectionControls[currentSection]
