@@ -8,6 +8,11 @@ import GenericDropDownControl from '../formControls/GenericDropDownControl';
 import GenericRadioButtons from '../formControls/GenericRadioButtons';
 
 import StaticData from '@/app/appMethods/StaticData';
+
+// We need to use state, previous version didn't
+import {useEffect, useState} from "react";
+import { DropDownItem } from '@/app/appData/DropDownItem';
+
 type DataAccess = {
     application : formField[];
     onchangeCall?: (...args: any[]) => void;
@@ -21,9 +26,24 @@ type Props = {
 const ApplicationDetails: React.FC<Props> = ({
     sectionInfo, dataAccess,
 }) =>{
+    const [regions, setRegions] = useState<DropDownItem[]>([
+        {key: 0, value: 0, text: "Please select a region"}
+    ])
+    useEffect(() =>{
+        let cancelled = false;
+        (async ()=>{
+            const regionsList = await StaticData.GetRegions();
+            if(!cancelled){
+                setRegions([{key: 0, value:0, text: "Please select a region"}, ...regionsList])
+            }
+        })();
+        return () => {
+            cancelled=true;
+        }
+    }, [dataAccess]);
+
     if(dataAccess !== undefined)
     {
-        let Regions = StaticData.GetRegions();
             let NumberOfApplicantsOptions = [];
             NumberOfApplicantsOptions.push({
                 key:1,value:1,text:"1"
@@ -78,7 +98,7 @@ const ApplicationDetails: React.FC<Props> = ({
                 f => f.name == "region")}
                 onchange={dataAccess.onchangeCall}
                 onvalidate={dataAccess.onvalidateCall}
-                selectableOptions={Regions}
+                selectableOptions={regions}
             />            
          </div>
     )

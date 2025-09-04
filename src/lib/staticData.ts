@@ -15,6 +15,8 @@ async function fetchJSON<T>(path: string, init?: RequestInit): Promise<T> {
   return (await res.json()) as T;
 }
 
-export const StaticData = {
-  getRegions: () => fetchJSON<Region[]>("/api/regions"),
+async function GetRegions(): Promise<Region[]>{
+  return fetchJSON<Region[]>('/api/regions');
 }
+const StaticData = {GetRegions};
+export default StaticData;
