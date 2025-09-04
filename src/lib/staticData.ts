@@ -1,4 +1,6 @@
 export type Region = {id: number; name: string};
+export type IncomeType = {id: number; Text: string, SubText: string, Type: string};
+export type ExpenditureType = {id: number; Text: string, SubText: string, Type: string };
 const BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001';
 
 async function fetchJSON<T>(path: string, init?: RequestInit): Promise<T> {
@@ -18,5 +20,9 @@ async function fetchJSON<T>(path: string, init?: RequestInit): Promise<T> {
 async function GetRegions(): Promise<Region[]>{
   return fetchJSON<Region[]>('/api/regions');
 }
-const StaticData = {GetRegions};
+export const StaticData = {GetRegions: ()=> fetchJSON<Region[]>('/api/regions'),
+  GetExpenditureTypes: ()=> fetchJSON<ExpenditureType[]>('/api/categories/expenditure'),
+  GetIncomeTypes: ()=> fetchJSON<IncomeType[]>('/api/categories/income')
+}
+
 export default StaticData;
