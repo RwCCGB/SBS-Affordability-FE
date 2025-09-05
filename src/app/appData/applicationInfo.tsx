@@ -1,3 +1,6 @@
+import applicantInfo from "@/UIComponents/Sections/applicantInfo";
+import ApplicationDetails from "@/UIComponents/Sections/applicationDetails";
+
 export interface formField {
     id: number;
     name: string;
@@ -80,7 +83,7 @@ function GetFormData(){
       ]
       return formData;
     }
-    
+
     export default {GetFormData}
   
        
