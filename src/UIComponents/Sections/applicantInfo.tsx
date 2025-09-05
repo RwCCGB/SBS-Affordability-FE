@@ -6,8 +6,9 @@ import type {formField} from '@/app/appData/applicationInfo';
 import GenericTextField from '../formControls/GenericTextboxControl';
 import GenericDropDownControl from '../formControls/GenericDropDownControl';
 import GenericRadioButtons from '../formControls/GenericRadioButtons';
-
+import ApplicantPersonalDetails from './ApplicantSections/applicantPersonalDetails';
 import StaticData from '@/app/appMethods/StaticData';
+import type { IApplicant } from '@/app/appData/applicantInfo';
 
 type DataAccess = {
     application : formField[];
@@ -17,14 +18,24 @@ type DataAccess = {
 type Props = {
     sectionInfo : Section;
     dataAccess? : DataAccess;
+    applicantsInfo : Array<IApplicant>;
 }
 
+
 const applicantInfo: React.FC<Props> = ({
-    sectionInfo, dataAccess,
+    sectionInfo, dataAccess,applicantsInfo
 }) =>{
     if(dataAccess !== undefined)
     {
  
+    let ApplicantSections = [];
+    for(let i=0; i<4; i++){
+        ApplicantSections.push(
+            <ApplicantPersonalDetails
+                sectionInfo={sectionInfo}
+                dataAccess={dataAccess}
+                applicant={applicantsInfo[i]}/>)
+        }
     return (
          <div>
             <div className="grid">
@@ -36,6 +47,8 @@ const applicantInfo: React.FC<Props> = ({
                 <p></p>
             </div>
 
+            {ApplicantSections}
+          
          </div>
     )
     }
