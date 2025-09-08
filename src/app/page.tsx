@@ -33,12 +33,13 @@ export default function Home() {
   const [applicantData,updateApplicantData] =
       useState(ApplicantInfo.GetApplicantData())
 
-  console.log(applicantData)
   
   const fieldChange = (e : React.FormEvent<HTMLInputElement>) => {
     UpdateField(e,
       affordabilityApplication,
-      updateAffordabilityApplication)
+      updateAffordabilityApplication,
+      applicantData,
+      updateApplicantData)
   }
 
   const pageValidate = (e : any) => {

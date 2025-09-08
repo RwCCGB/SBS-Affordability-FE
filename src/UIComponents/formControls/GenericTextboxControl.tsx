@@ -4,12 +4,14 @@ type Props = {
     field:formField[];
     onchange?: (...args: any[]) => void;
     onvalidate?: (...args: any[]) => void;
+    applicantId:number;
 }
 
 const GenericTextField : React.FC<Props> = ({
     field,
     onchange,
-    onvalidate}) => 
+    onvalidate,
+    applicantId}) => 
     {
         let reqAsterixClass = "hidden";
         if(field[0].required){
@@ -19,6 +21,11 @@ const GenericTextField : React.FC<Props> = ({
         let inputType = 'text';
         if(field[0].type == "number"){ inputType="number"}
         
+        let controlIdApplicantId = "";
+        if(applicantId !== undefined){
+            controlIdApplicantId = applicantId.toString() + "_";
+        }
+
         return (
             <div>
                 <div className="grid">
@@ -43,7 +50,7 @@ const GenericTextField : React.FC<Props> = ({
                         className="inputField"
                         onChange={onchange} 
                         onBlur={onvalidate}
-                        name={field[0].name} 
+                        name={controlIdApplicantId + field[0].name} 
                         type={inputType}
                         aria-invalid={!field[0].isValid}
                         aria-describedby="invalid-helper">    

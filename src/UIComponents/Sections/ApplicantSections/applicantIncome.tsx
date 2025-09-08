@@ -34,7 +34,8 @@ const applicantIncome : React.FC<Props>= ({
                 field={applicant.incomeData.filter(
                     f => f.id == cntIndex)}
                 onchange={dataAccess.onchangeCall}
-                onvalidate={dataAccess.onvalidateCall}/>)
+                onvalidate={dataAccess.onvalidateCall}
+                applicantId={applicant.applicantId}/>)
         }
         }
         cntIndex++;
