@@ -23,6 +23,7 @@ const income: React.FC<Props> = ({
     let ApplicantSections = [];
     
     for(let i=0; i<4; i++){
+        
         ApplicantSections.push(
             <ApplicantInfoSection
                 sectionInfo={sectionInfo}
