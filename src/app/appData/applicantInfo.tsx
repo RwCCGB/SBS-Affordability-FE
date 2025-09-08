@@ -7,8 +7,8 @@ export interface IApplicant {
 export interface IApplicantData {
     applicants:Array<IApplicant>
 }
-
-import type { formField } from '@/app/appData/applicationInfo';
+import type {formField} from "sbs-affordability-types/"
+//import type { formField } from '@/app/appData/applicationInfo';
 
 function GetApplicantData(){
     let applicantData: Array<IApplicant> = [];
@@ -32,7 +32,7 @@ function GetApplicantData(){
             errorMessage:'',
             validationGroup:22
         }
-        
+
         applicant.incomeData = [] as Array<formField>;
         applicant.expenditureData = [] as Array<formField>;
 

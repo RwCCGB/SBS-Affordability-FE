@@ -1,7 +1,7 @@
 import applicantInfo from "@/UIComponents/Sections/applicantInfo";
 import ApplicationDetails from "@/UIComponents/Sections/applicationDetails";
-
-export interface formField {
+//import formField from "sbs-affordability-types/"
+/*export interface formField {
     id: number;
     name: string;
     value: number;
@@ -15,7 +15,7 @@ export interface formField {
     isValid: boolean,
     errorMessage:string,
     validationGroup:number
-  }
+  }*/
 
 function GetFormData(){
     const formData = 
