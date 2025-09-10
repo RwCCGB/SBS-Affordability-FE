@@ -24,7 +24,7 @@ const result: React.FC<Props> = ({
     return (
          <div>
             <div className="grid">
-                <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 5 of 5</span></h2>
+                <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 4 of 4</span></h2>
             </div>
             <div className="grid">
                 <p></p>
