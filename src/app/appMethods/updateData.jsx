@@ -13,16 +13,18 @@ const UpdateField = (
       let applicantIndex = parseInt(e.target.name.charAt(0));
       let fieldName = e.target.name.slice(2);
 
-      let appIndex = 0;
       editApplicants.forEach(applicant => {
-        //console.log("gannin" + appIndex + " = " + applicantIndex)
-        if(appIndex == applicantIndex){
+        if(applicantIndex == applicant.applicantId){
           applicant.incomeData.forEach(item => {
             if(fieldName == item.name){
               item.value = e.target.value;
             }
-            appIndex = appIndex + 1;
-        });
+          })
+          applicant.expenditureData.forEach(item => {
+            if(fieldName == item.name){
+              item.value = e.target.value;
+            }
+          })
       }
       updateApplicantData(editApplicants)
       });

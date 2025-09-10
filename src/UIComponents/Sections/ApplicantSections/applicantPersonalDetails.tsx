@@ -23,7 +23,21 @@ const applicantPersonalDetails : React.FC<Props>= ({
     
     let controlItems = []
     let cntIndex = 0;
-    applicant.incomeData.forEach(incomeItem => {
+    //console.log(applicant);
+    
+    // Horrid hack...
+    let fields = []
+    fields.push(applicant.applicantIsFirstTimeBuyer);
+ /*   
+    controlItems.push(<GenericTextField
+        field={fields.filter(
+            f => f.name == "applicantIsFirstTimeBuyer")}
+        onchange={dataAccess.onchangeCall}
+        onvalidate={dataAccess.onvalidateCall}
+        applicantId={applicant.applicantId}/>)
+
+    
+    applicants.forEach(applicant => {
         if(dataAccess !== undefined)
         {
        /* controlItems.push(<GenericTextField
@@ -46,15 +60,17 @@ const applicantPersonalDetails : React.FC<Props>= ({
                 onchange={dataAccess.onchangeCall}
                 onvalidate={dataAccess.onvalidateCall}/>)
         }
-        }*/
+        }
         cntIndex++;
         }
-    })
+    })*/
     return (
         <div>
-
+            <div>
         <h3>Applicant Income Info {applicant.applicantId}</h3>
-       
+        {controlItems}
+        </div>
+
         </div>
 ) 
 

@@ -10,7 +10,7 @@ export interface IApplicantData {
 import type {formField} from "sbs-affordability-types/"
 //import type { formField } from '@/app/appData/applicationInfo';
 
-function GetApplicantData(){
+async function GetApplicantData(){
     let applicantData: Array<IApplicant> = [];
     
     for (let appCnt = 0; appCnt < 4; appCnt++){
@@ -37,6 +37,8 @@ function GetApplicantData(){
         applicant.expenditureData = [] as Array<formField>;
 
         // START HARD CODE INCOME
+        
+        
         let incomeTyoe = {
             id:555,
             name:"pension",
@@ -61,7 +63,7 @@ function GetApplicantData(){
             required:false,
             minAmount:0,
             maxAmount:10,
-            labelText:"tax evasion Main Label",
+            labelText:"FROM ASYNC tax evasion Main Label",
             labelSubtext:"tax evasion sub text",
             afterFieldText: "for life",
             isValid: true,

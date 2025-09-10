@@ -9,7 +9,6 @@ import IncomeSection from '@/UIComponents/Sections/income';
 import ExpenditureISection from '@/UIComponents/Sections/expenditure';
 import ResultSection from '@/UIComponents/Sections/result';
 
-
 import ApplicationInfo from '@/app/appData/applicationInfo';
 import UpdateField from '@/app/appMethods/updateData';
 import ValidateField from '@/app/appMethods/validation';
@@ -19,21 +18,45 @@ import { getSectionById } from '@/app/appData/sectionInfo';
 
 import ApplicantInfo from '@/app/appData/applicantInfo';
 
+import {
+  affordabilityRequest,
+  formField,
+  IApplicant,
+  toAffordabilityRequest,
+  validateResult,
+} from "sbs-affordability-types";
+import { validateAffordabilityRequest } from "sbs-affordability-types";
+
 export default function Home() {
   const [hasValidated,updateHasValidated] = useState(false);
   const [currentSection, updateCurrentSection] = useState(0);
 
   const activeSection = getSectionById(currentSection)!;
+  const [hasDataLoaded,updateHasDataLoaded] = useState(false);
 
   const [affordabilityApplication,
     updateAffordabilityApplication] = 
       useState(ApplicationInfo.GetFormData())
   
+  //const [applicantData,updateApplicantData] =
+      //useState(ApplicantInfo.GetApplicantData())
   
-  const [applicantData,updateApplicantData] =
-      useState(ApplicantInfo.GetApplicantData())
+      const [applicantData,updateApplicantData] =
+      useState()
 
-  
+      useEffect(()=>{
+        ApplicantInfo.GetApplicantData().then((data) => {
+          return data
+        }
+        ).then((data) => {
+          updateApplicantData(data)
+          updateHasDataLoaded(true)
+        })
+      },[]);
+
+  const [maxPermittedLoanAmount, updateMaxPermittedLoanAmount]=
+      useState(0)
+
   const fieldChange = (e : React.FormEvent<HTMLInputElement>) => {
     UpdateField(e,
       affordabilityApplication,
@@ -61,6 +84,9 @@ export default function Home() {
     if(isPageValid){
       let nextPage = currentSection + 1;
       updateCurrentSection(nextPage);
+      if(nextPage == 4){
+        ProcessAffordability();
+      }
     }
   }
 
@@ -75,6 +101,22 @@ export default function Home() {
     }
   }
 
+  function ProcessAffordability()
+  {
+    let requestObj;
+    
+    const request : affordabilityRequest = toAffordabilityRequest(
+      affordabilityApplication, applicantData);
+      console.log("Gonna test! ")
+      console.log(request);
+      /*...then validate the resulting object against the zod schema*/
+      const validation : validateResult = 
+        validateAffordabilityRequest(request);
+      console.log(validation);
+      
+      updateMaxPermittedLoanAmount(56134)
+  }
+
   function convertToRequestObject(e : React.FormEvent<HTMLInputElement>){
     e.preventDefault();
     let requestObject = 
@@ -84,12 +126,13 @@ export default function Home() {
   }
   
   function StepBack(e : any){
-    console.log("goin in")
     e.preventDefault();
     let backPage = currentSection - 1;
       updateCurrentSection(backPage);
   }
 
+  if(hasDataLoaded)
+  {
   const sectionData = {
     application:affordabilityApplication,
     onchangeCall:fieldChange,
@@ -102,11 +145,11 @@ export default function Home() {
       sectionInfo={activeSection}
       dataAccess={sectionData}/>);
 
-  SectionControls.push(
+  /*SectionControls.push(
     <ApplicantDetails
       sectionInfo={activeSection}
       dataAccess={sectionData}
-      applicantsInfo={applicantData}/>)
+      applicantsInfo={applicantData}/>)*/
   
     SectionControls.push(
       <IncomeSection 
@@ -124,7 +167,8 @@ export default function Home() {
     SectionControls.push(
       <ResultSection 
         sectionInfo={activeSection}
-        dataAccess={sectionData}/>)
+        dataAccess={sectionData}
+        maxPermittedLoanAmount={maxPermittedLoanAmount}/>)
   
   return (
     <div>
@@ -162,4 +206,5 @@ export default function Home() {
       </section>
     </div>
   )
+}
 }

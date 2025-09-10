@@ -52,10 +52,10 @@ const ApplicationDetails: React.FC<Props> = ({
                 key:2,value:2,text:"2"
             })
             NumberOfApplicantsOptions.push({
-                key:3,value:3,text:"2"
+                key:3,value:3,text:"3"
             })
             NumberOfApplicantsOptions.push({
-                key:4,value:4,text:"2"
+                key:4,value:4,text:"4"
             })
     return (
          <div>
@@ -83,12 +83,34 @@ const ApplicationDetails: React.FC<Props> = ({
                 field={dataAccess.application.filter(
                     f => f.name == "adultDependancies")}
                 onchange={dataAccess.onchangeCall}
-                onvalidate={dataAccess.onvalidateCall}
+                onvalidate={dataAccess.onvalidateCall
+                }
             />
 
             <GenericTextField
                 field={dataAccess.application.filter(
                     f => f.name == "childDependancies")}
+                onchange={dataAccess.onchangeCall}
+                onvalidate={dataAccess.onvalidateCall}
+            />  
+
+            <GenericTextField
+                field={dataAccess.application.filter(
+                    f => f.name == "propertyPrice")}
+                onchange={dataAccess.onchangeCall}
+                onvalidate={dataAccess.onvalidateCall}
+            />  
+
+            <GenericTextField
+                field={dataAccess.application.filter(
+                    f => f.name == "loanAmount")}
+                onchange={dataAccess.onchangeCall}
+                onvalidate={dataAccess.onvalidateCall}
+            />  
+
+            <GenericTextField
+                field={dataAccess.application.filter(
+                    f => f.name == "interestRate")}
                 onchange={dataAccess.onchangeCall}
                 onvalidate={dataAccess.onvalidateCall}
             />  

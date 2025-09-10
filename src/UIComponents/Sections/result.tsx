@@ -13,10 +13,11 @@ type DataAccess = {
 type Props = {
     sectionInfo : Section;
     dataAccess? : DataAccess;
+    maxPermittedLoanAmount : number
 }
 
 const result: React.FC<Props> = ({
-    sectionInfo, dataAccess,
+    sectionInfo,dataAccess,maxPermittedLoanAmount
 }) =>{
     if(dataAccess !== undefined)
     {
@@ -34,7 +35,7 @@ const result: React.FC<Props> = ({
             <div className='grid'>
                 <div className="halfPanelLeft">
                     <p className='resultPanel'>
-                        Maximum loan amount: £<strong>33434</strong>
+                        Maximum loan amount: £<strong>{maxPermittedLoanAmount}</strong>
                     </p>
                     <p><button>Reset Calculator</button></p>
                     <p>Please see the table below for the max LTV for your loan amount.</p>

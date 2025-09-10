@@ -34,7 +34,8 @@ console.log(applicant);
                 field={applicant.expenditureData.filter(
                     f => f.id == cntIndex)}
                 onchange={dataAccess.onchangeCall}
-                onvalidate={dataAccess.onvalidateCall}/>)
+                onvalidate={dataAccess.onvalidateCall}
+                applicantId={applicant.applicantId}/>)
         }
         }
         cntIndex++;

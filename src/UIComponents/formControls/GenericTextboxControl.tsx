@@ -4,7 +4,7 @@ type Props = {
     field:formField[];
     onchange?: (...args: any[]) => void;
     onvalidate?: (...args: any[]) => void;
-    applicantId:number;
+    applicantId?:number;
 }
 
 const GenericTextField : React.FC<Props> = ({

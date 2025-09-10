@@ -1,14 +1,24 @@
-function ConvertToRequestObj(affordabilityApplication){
-    // MATT REPLACE WITH WHAT WANT! 
+function ConvertToRequestObj(
+  affordabilityApplication,
+  applicantData){
     
+    let applicationData = []
+    let applicantsData = []
+
+    affordabilityApplication.forEach(field => {
+      applicationData.push({name:field.name,value:field.value})
+    });
+
+    applicantData.forEach(thisApplicant => {
+      applicantsData.push({"applicantId":thisApplicant.applicantId})
+    });
+
     let requestObject = {
-        fields:[]
-      }
+      "applicationData":applicationData,
+      "applicantData":applicantsData
+    }
     
-      affordabilityApplication.forEach(field => {
-        requestObject.fields.push({name:field.name,value:field.value})
-      });
-      return requestObject;
+    return requestObject;
 }
 
 export default {ConvertToRequestObj}
