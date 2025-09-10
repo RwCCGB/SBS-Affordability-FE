@@ -45,10 +45,9 @@ const GenericRadioButtons : React.FC<Props> = ({
                         if(orientation == 'horizontal')
                         {
                             return (
-                            <span>
+                            <span key={key}>
                                  <input 
                                     type="radio"
-                                    key={key}
                                     value={e.value} 
                                     name={field[0].name}
                                     onChange={onchange} 
@@ -59,10 +58,9 @@ const GenericRadioButtons : React.FC<Props> = ({
                         }
                         if(orientation == 'vertical'){                        
                         return (
-                            <label>
+                            <label key={key}>
                             <input 
                                     type="radio"
-                                    key={key}
                                     value={e.value} 
                                     name={field[0].name}
                                     onChange={onchange} 

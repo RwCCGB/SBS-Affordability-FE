@@ -19,11 +19,21 @@ import { getSectionById } from '@/app/appData/sectionInfo';
 
 import ApplicantInfo from '@/app/appData/applicantInfo';
 
+import type { IApplicant, IApplicantData } from "@/app/appData/applicantInfo"; 
+import { GetApplicantData } from "@/app/appData/applicantInfo"; 
+
+import type { formField } from "@/app/appData/applicationInfo"; 
+import type { JSX } from "react";
+import ApplicantIncome from "@/UIComponents/Sections/ApplicantSections/applicantIncome"; 
+import { GetIncomeCategories, type IncomeCategory } from "@/lib/staticData";
+
 export default function Home() {
   const [hasValidated,updateHasValidated] = useState(false);
   const [currentSection, updateCurrentSection] = useState(0);
 
   const activeSection = getSectionById(currentSection)!;
+
+  const applicants = GetApplicantData();
 
   const [affordabilityApplication,
     updateAffordabilityApplication] = 
@@ -31,7 +41,7 @@ export default function Home() {
   
   
   const [applicantData,updateApplicantData] =
-      useState(ApplicantInfo.GetApplicantData())
+     useState<IApplicantData | null>(null);
 
   
   const fieldChange = (e : React.FormEvent<HTMLInputElement>) => {
@@ -39,7 +49,7 @@ export default function Home() {
       affordabilityApplication,
       updateAffordabilityApplication,
       applicantData,
-      updateApplicantData)
+      )
   }
 
   const pageValidate = (e : any) => {
@@ -96,6 +106,44 @@ export default function Home() {
     onvalidateCall:validateInput
   }
 
+  // START
+  let incomeCats: IncomeCategory[] = [];
+  for (let i = 0; i < 4; i++) { 
+    const applicant: IApplicant = { 
+      applicantId: i, 
+      incomeData: [{
+        id:1,
+        name:"numberOfApplicants",
+        value:0,
+        type:"number",
+        required:true,
+        minAmount:1,
+        maxAmount:4,
+        labelText:"Total number of applicants",
+        labelSubtext:"",
+        afterFieldText: "",
+        isValid: true,
+        errorMessage:'',
+        validationGroup:0
+      }], 
+      expenditureData: [],
+    };
+    applicantData?.applicants.push(applicant);
+    if(applicantData?.applicants.length ===0){
+    updateApplicantData(applicantData);
+    }
+
+    //if (Array.isArray(incomeCats) && incomeCats.length) { 
+    //  for (let k = 0; k < incomeCats.length; k++) { 
+    //    applicant.incomeData.push(incomeCats[k], k); 
+    //  }
+    //}
+
+    
+  }
+
+  // STOP
+
   let SectionControls = [];
   SectionControls.push(
     <ApplicationDetails 
@@ -106,20 +154,21 @@ export default function Home() {
     <ApplicantDetails
       sectionInfo={activeSection}
       dataAccess={sectionData}
-      applicantsInfo={applicantData}/>)
+      applicantsInfo={applicantData?.applicants ?? []}/>)
   
     SectionControls.push(
       <IncomeSection 
         sectionInfo={activeSection}
         dataAccess={sectionData}
-        applicantsInfo={applicantData}/>
+        applicantsInfo={applicantData?.applicants ?? []}
+        updateApplicantData={updateApplicantData}/>
     )
 
     SectionControls.push(
       <ExpenditureISection 
         sectionInfo={activeSection}
         dataAccess={sectionData}
-        applicantsInfo={applicantData}/>)
+        applicantsInfo={applicantData?.applicants ?? []}/>)
 
     SectionControls.push(
       <ResultSection 
@@ -163,3 +212,4 @@ export default function Home() {
     </div>
   )
 }
+

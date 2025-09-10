@@ -1,4 +1,5 @@
 import React from 'react';
+import type { JSX } from 'react';
 import type {Section} from '@/app/appData/sectionInfo';
 import type {formField} from '@/app/appData/applicationInfo';
 import type { IApplicant } from '@/app/appData/applicantInfo';
@@ -20,10 +21,18 @@ type Props = {
 const applicantPersonalDetails : React.FC<Props>= ({
     sectionInfo, dataAccess,applicant
 }) =>{
-    
-    let controlItems = []
+    if(!dataAccess || !Array.isArray(dataAccess.application)){
+        return null;
+    }
+    if(!applicant || !Array.isArray(applicant.incomeData)){
+        return null;
+    }
+    let controlItems : JSX.Element[] = [];
     let cntIndex = 0;
-    applicant.incomeData.forEach(incomeItem => {
+    applicant.incomeData.forEach((incomeItem, idx) => {
+        if(!incomeItem){
+            return;
+        }
         if(dataAccess !== undefined)
         {
        /* controlItems.push(<GenericTextField

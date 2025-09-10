@@ -5,12 +5,16 @@ type Props = {
     onchange?: (...args: any[]) => void;
     onvalidate?: (...args: any[]) => void;
     applicantId:number;
+    labelOverride?: string;
+    helperTextOverride?: string;
 }
 
 const GenericTextField : React.FC<Props> = ({
     field,
     onchange,
     onvalidate,
+    labelOverride,
+    helperTextOverride,
     applicantId}) => 
     {
         let reqAsterixClass = "hidden";
@@ -25,7 +29,9 @@ const GenericTextField : React.FC<Props> = ({
         if(applicantId !== undefined){
             controlIdApplicantId = applicantId.toString() + "_";
         }
-
+        const f= field[0];
+        const label = labelOverride ?? f?.label ?? f?.name ?? "";
+        const helper = helperTextOverride ?? f?.helperText ?? "";
         return (
             <div>
                 <div className="grid">

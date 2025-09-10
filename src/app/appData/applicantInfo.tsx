@@ -1,102 +1,75 @@
+import type { formField } from "@/app/appData/applicationInfo"; 
+import { GetIncomeCategories, type IncomeCategory } from "@/lib/staticData";
+
+
 export interface IApplicant {
-    applicantId:number;
-    applicantIsFirstTimeBuyer:formField;
-    incomeData:Array<formField>;
-    expenditureData:Array<formField>
+  applicantId: number;
+  applicantIsFirstTimeBuyer: formField; 
+  incomeData: Array<formField>;
+  expenditureData: Array<formField>;
 }
+
 export interface IApplicantData {
-    applicants:Array<IApplicant>
+  applicants: Array<IApplicant>;
 }
-import type {formField} from "sbs-affordability-types/"
-//import type { formField } from '@/app/appData/applicationInfo';
 
-function GetApplicantData(){
-    let applicantData: Array<IApplicant> = [];
-    
-    for (let appCnt = 0; appCnt < 4; appCnt++){
-        let applicant = {} as IApplicant;
-        applicant.applicantId = appCnt;
+export async function GetApplicantData(): Promise<IApplicantData> {
+  const applicants: IApplicant[] = [];
 
-        applicant.applicantIsFirstTimeBuyer = {
-            id:1000,
-            name:"isFirstTimeBuyer",
-            value:0,
-            type:"number",
-            required:false,
-            minAmount:0,
-            maxAmount:1,
-            labelText:"Is this applicant a first time buyer",
-            labelSubtext:"Have they bought a house before?",
-            afterFieldText: "",
-            isValid: true,
-            errorMessage:'',
-            validationGroup:22
-        }
+  let incomeCats: IncomeCategory[] = [];
+  try {
+    incomeCats = await GetIncomeCategories(); 
+    console.log('Income Categories [applicantInfo] ', incomeCats);
+  } catch (e) {
+    console.error("[GetApplicantData] failed to load income categories", e);
+  }
 
-        applicant.incomeData = [] as Array<formField>;
-        applicant.expenditureData = [] as Array<formField>;
+  for (let i = 0; i < 4; i++) { 
+    const applicant: IApplicant = { 
+      applicantId: i, 
+      applicantIsFirstTimeBuyer: {
+        id: 1000 + i,
+        name: "isFirstTimeBuyer",
+        value: false,
+        type: "boolean",
+        required: false,
+        minAmount: 0,
+        maxAmount: 0,
+        labelText: "First-time buyer?",
+        labelSubText: "",
+        afterFieldText: "",
+        isValid: true,
+        errorMessage: "",
+        validationGroup: 0,
+      } as formField, 
+      incomeData: [], 
+      expenditureData: [], 
+    };
 
-        // START HARD CODE INCOME
-        let incomeTyoe = {
-            id:555,
-            name:"pension",
-            value:0,
-            type:"number",
-            required:false,
-            minAmount:0,
-            maxAmount:10,
-            labelText:"Pension Main Label",
-            labelSubtext:"pension sub text",
-            afterFieldText: "monthly",
-            isValid: true,
-            errorMessage:'',
-            validationGroup:33
-        } as formField;
+    const toFormField = (dto: IncomeCategory, idx: number): formField => ({
+      id: dto.id, 
+      name: dto.name.replace(/\s+/g, ""), 
+      value: 0, 
+      type: "number", 
+      required: false, 
+      minAmount: 0, 
+      maxAmount: 1_000_000_000, 
+      labelText: dto.name, 
+      labelSubText: dto.description ?? "", 
+      afterFieldText: "monthly", 
+      isValid: true, 
+      errorMessage: "", 
+      validationGroup: 33, 
+    } as formField);
 
-        let incomeTyoe2 = {
-            id:13,
-            name:"taxEvasion",
-            value:0,
-            type:"number",
-            required:false,
-            minAmount:0,
-            maxAmount:10,
-            labelText:"tax evasion Main Label",
-            labelSubtext:"tax evasion sub text",
-            afterFieldText: "for life",
-            isValid: true,
-            errorMessage:'',
-            validationGroup:33
-        } as formField;
-        
-        applicant.incomeData.push(incomeTyoe);
-        applicant.incomeData.push(incomeTyoe2);
-        // END INCOME DATA HARDCODED 
-
-        // Start hard coded expenditure items
-        let expenditureItem = {
-            id:33,
-            name:"alcohol",
-            value:0,
-            type:"number",
-            required:false,
-            minAmount:0,
-            maxAmount:100,
-            labelText:"Cans of strong cider cost per dayr",
-            labelSubtext:"This is a field to say how much you drink and how much it costs",
-            afterFieldText: "daiiy",
-            isValid: true,
-            errorMessage:'',
-            validationGroup:33
-        } as formField;
-
-        applicant.expenditureData.push(expenditureItem);
-        // End hard coded expenditure items.
-
-        applicantData.push(applicant);
+    if (Array.isArray(incomeCats) && incomeCats.length) { 
+      for (let k = 0; k < incomeCats.length; k++) { 
+        applicant.incomeData.push(toFormField(incomeCats[k], k)); 
+      }
     }
 
-    return applicantData;
-}
+    applicants.push(applicant); 
+  }
 
-export default {GetApplicantData};
+  return { applicants }; 
+}

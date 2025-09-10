@@ -1,55 +1,102 @@
 "use client";
-import React from 'react';
-import type {Section} from '@/app/appData/sectionInfo';
-import type { formField } from '@/app/appData/applicationInfo';
 
-import ApplicantInfoSection from '@/UIComponents/Sections/ApplicantSections/applicantIncome'
-import type { IApplicant } from '@/app/appData/applicantInfo';
+import React, { useEffect, useState } from "react"; 
+import type { Section } from "@/app/appData/sectionInfo";
+import type { formField } from "@/app/appData/applicationInfo";
+import type { IApplicantData, IApplicant } from "@/app/appData/applicantInfo";
+import ApplicantIncome from "@/UIComponents/Sections/ApplicantSections/applicantIncome";
+import { GetApplicantData } from "@/app/appData/applicantInfo"; 
 
 type DataAccess = {
-    application : formField[];
-    onchangeCall?: (...args: any[]) => void;
-    onvalidateCall?: (...args: any[]) => void;
-}
+  application: formField[];
+  onchangeCall?: (...args: any[]) => void;
+  onvalidateCall?: (...args: any[]) => void;
+};
+
 type Props = {
-    sectionInfo : Section;
-    dataAccess? : DataAccess;
-    applicantsInfo : Array<IApplicant>;
-}
+  sectionInfo: Section;
+  dataAccess: DataAccess;
+  applicantsInfo?: IApplicant[]; 
+};
 
-const income: React.FC<Props> = ({
-    sectionInfo, dataAccess,applicantsInfo
-}) =>{
-    let ApplicantSections = [];
-    
-    for(let i=0; i<4; i++){
-        
-        ApplicantSections.push(
-            <ApplicantInfoSection
-                sectionInfo={sectionInfo}
-                dataAccess={dataAccess}
-                applicant={applicantsInfo[i]}/>)
-    }
+const Income: React.FC<Props> = ({ sectionInfo, dataAccess, applicantsInfo }) => {
 
-    if(dataAccess !== undefined)
-    {
-    return (
-         <div>
-            <div className="grid">
-                <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 3 of 5</span></h2>
-            </div>
-            <div className="grid">
-                <p></p>
-                <p><progress value={sectionInfo.percentageProgress} max="100" /></p>
-                <p></p>
-            </div>
+  const [localApplicants, setLocalApplicants] = useState<IApplicant[] | null>(null); 
+  const [loading, setLoading] = useState<boolean>(true); 
 
-            {ApplicantSections}
-         </div>
-    )
-    }
-}
+  useEffect(() => { 
+    let alive = true;
+    (async () => {
+      try {
+        const data: IApplicantData = await GetApplicantData();
+        console.log("[income.tsx] fetched applicants:", data);
+        if (!alive) return;
+        setLocalApplicants(data.applicants ?? []);
+      } catch (e) {
+        console.error("[income.tsx] GetApplicantData failed:", e);
+        if (!alive) return;
+        setLocalApplicants([]);
+      } finally {
+        if (alive) setLoading(false);
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
 
-export default income
+  if (!dataAccess) return null; 
 
-    
+  const sourceApplicants: IApplicant[] =
+    applicantsInfo && applicantsInfo.length > 0
+      ? applicantsInfo
+      : localApplicants ?? []; 
+
+  console.log(
+    "[income.tsx] sourceApplicants length =",
+    sourceApplicants.length
+  ); 
+
+  const ApplicantSections: JSX.Element[] = [];
+  for (let i = 0; i < 1; i++) { 
+    const applicant = sourceApplicants[i];
+    console.log("[income.tsx] applicantId:", applicant?.applicantId); 
+
+    ApplicantSections.push(
+      <ApplicantIncome
+        key={`inc-sec-${applicant.applicantId}`} 
+        sectionInfo={sectionInfo}
+        dataAccess={dataAccess}
+        applicant={applicant}
+      />
+    );
+  }
+
+  return (
+    <div>
+      <div className="grid">
+        <h2>
+          {sectionInfo.sectionTitle} <span className="progressText">Step 3 of 5</span>
+        </h2>
+      </div>
+
+      <div className="grid">
+        <p><strong>[Income debug]</strong>{" "}
+          applicants={sourceApplicants.length}
+        </p> {}
+        {loading && <p>Loading applicants…</p>} {}
+        {!loading && sourceApplicants.length === 0 && (
+          <p>No applicants to render.</p> 
+        )}
+      </div>
+
+      <div className="grid">
+        <p />
+        <p />
+        <progress value={sectionInfo.percentageProgress} max="100" />
+      </div>
+
+      {ApplicantSections }
+    </div>
+  );
+};
+
+export default Income;

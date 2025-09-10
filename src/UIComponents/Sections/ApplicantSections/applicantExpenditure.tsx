@@ -1,51 +1,58 @@
-import React from 'react';
-import type {Section} from '@/app/appData/sectionInfo';
-import type {formField} from '@/app/appData/applicationInfo';
-import type { IApplicant } from '@/app/appData/applicantInfo';
+"use client";
 
-import GenericTextField from '@/UIComponents/formControls/GenericTextboxControl';
-import expenditure from '../expenditure';
+import React from "react";
+import type { Section } from "@/app/appData/sectionInfo";
+import type { formField } from "@/app/appData/applicationInfo";
+import type { IApplicant } from "@/app/appData/applicantInfo";
+
+import GenericTextField from "@/UIComponents/formControls/GenericTextboxControl";
+import type { ExpenditureType } from "@/lib/staticData"; 
 
 type DataAccess = {
-    application : formField[];
-    onchangeCall?: (...args: any[]) => void;
-    onvalidateCall?: (...args: any[]) => void;
-}
+  application: formField[];
+  onchangeCall?: (...args: any[]) => void;
+  onvalidateCall?: (...args: any[]) => void;
+};
+
 type Props = {
-    sectionInfo : Section;
-    dataAccess? : DataAccess;
-    applicant : IApplicant;
-}
+  sectionInfo: Section;
+  dataAccess?: DataAccess;
+  applicant: IApplicant; t
+  expenditureTypes: ExpenditureType[]; 
+};
 
-const applicantExpenditure : React.FC<Props>= ({
-    sectionInfo, dataAccess,applicant
-}) =>{
-console.log(applicant);
-    let controlItems = []
-    let cntIndex = 0;
-    applicant.expenditureData.forEach(expenditureItem => {
-        // Hack.. not time to fix proper.
-        expenditureItem.id = cntIndex;
-        if(expenditureItem !== undefined)
-        {
-            if(dataAccess !== undefined){
-            controlItems.push(
-            <GenericTextField
-                field={applicant.expenditureData.filter(
-                    f => f.id == cntIndex)}
-                onchange={dataAccess.onchangeCall}
-                onvalidate={dataAccess.onvalidateCall}/>)
-        }
-        }
-        cntIndex++;
-    })
+const ApplicantExpenditure: React.FC<Props> = ({
+  sectionInfo,
+  dataAccess,
+  applicant,
+  expenditureTypes,
+}) => {
+  if (!dataAccess) return null; // guard
+
+
+  const controls = (expenditureTypes ?? []).map((t, idx) => {
+    const label = t.Text ?? t.Type; 
+    if (!label) return null;
+
+    const field = dataAccess.application.find((f) => f.name === label);
+    if (!field) return null; 
+
     return (
-        <div>
-        <h3>Applicant Expenditure Info {applicant.applicantId}</h3>
-        {controlItems}
-        </div>
-) 
+      <GenericTextField
+        key={`exp-${applicant.applicantId}-${idx}`} 
+        field={field} 
+        applicantId={applicant.applicantId} 
+        onchange={dataAccess.onchangeCall}
+        onvalidate={dataAccess.onvalidateCall}
+      />
+    );
+  });
 
-}
+  return (
+    <div>
+      {controls}
+    </div>
+  );
+};
 
-export default applicantExpenditure
+export default ApplicantExpenditure;

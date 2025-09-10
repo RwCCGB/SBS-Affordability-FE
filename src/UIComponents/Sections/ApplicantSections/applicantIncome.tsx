@@ -1,52 +1,46 @@
-import React from 'react';
-import type {Section} from '@/app/appData/sectionInfo';
-import type {formField} from '@/app/appData/applicationInfo';
-import type { IApplicant } from '@/app/appData/applicantInfo';
+import React from "react"; 
+import type { Section } from "@/app/appData/sectionInfo"; 
+import type { formField } from "@/app/appData/applicationInfo";
+import type { IApplicant } from "@/app/appData/applicantInfo"; 
+import GenericTextField from "@/UIComponents/formControls/GenericTextboxControl"; 
 
-import GenericTextField from '@/UIComponents/formControls/GenericTextboxControl';
-import expenditure from '../expenditure';
 
 type DataAccess = {
-    application : formField[];
-    onchangeCall?: (...args: any[]) => void;
-    onvalidateCall?: (...args: any[]) => void;
-}
+  application: formField[];
+  onchangeCall?: (...args: any[]) => void;
+  onvalidateCall?: (...args: any[]) => void;
+};
+
+
 type Props = {
-    sectionInfo : Section;
-    dataAccess? : DataAccess;
-    applicant : IApplicant;
-}
+  sectionInfo: Section;
+  dataAccess: DataAccess;
+  applicant: IApplicant;
+};
 
-const applicantIncome : React.FC<Props>= ({
-    sectionInfo, dataAccess,applicant
-}) =>{
 
-    let controlItems = []
-    let cntIndex = 0;
-    applicant.incomeData.forEach(incomeItem => {
-        // Hack.. not time to fix proper.
-        incomeItem.id = cntIndex;
-        if(incomeItem !== undefined)
-        {
-            if(dataAccess !== undefined){
-            controlItems.push(
-            <GenericTextField
-                field={applicant.incomeData.filter(
-                    f => f.id == cntIndex)}
-                onchange={dataAccess.onchangeCall}
-                onvalidate={dataAccess.onvalidateCall}
-                applicantId={applicant.applicantId}/>)
-        }
-        }
-        cntIndex++;
-    })
-    return (
-        <div>
-        <h3>Applicant Income Info {applicant.applicantId}</h3>
-        {controlItems}
+const ApplicantIncome: React.FC<Props> = ({ sectionInfo, dataAccess, applicant }) => {
+  if (!dataAccess || !Array.isArray(dataAccess.application)) return null; 
+  if (!applicant || !Array.isArray(applicant.incomeData)) return null; 
+ 
+  console.log("[ApplicantIncome]", "applicantId=", applicant.applicantId, "incomeData length=", Array.isArray(applicant.incomeData) ? applicant.incomeData.length : "not array", applicant.incomeData);
+  const incomeFields: formField[] = Array.isArray(applicant.incomeData) ? applicant.incomeData : [];
+  return (
+    <div style={{ marginBottom: 24 }}> {}
+      <h3>Applicant Income Info {applicant.applicantId}</h3> {}
+
+      {applicant.incomeData.map((field, i) => ( 
+        <div key={`inc-${applicant.applicantId}-${field.id ?? i}`} style={{ marginBottom: 12 }}>
+          <GenericTextField
+            field={[field]} 
+            applicantId={applicant.applicantId} 
+            onchange={dataAccess.onchangeCall} 
+            onvalidate={dataAccess.onvalidateCall} 
+          />
         </div>
-) 
+      ))}
+    </div>
+  );
+};
 
-}
-
-export default applicantIncome
+export default ApplicantIncome; 

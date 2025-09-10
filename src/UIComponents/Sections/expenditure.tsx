@@ -1,54 +1,73 @@
 "use client";
-import React from 'react';
-import type {Section} from '@/app/appData/sectionInfo';
-import type { formField } from '@/app/appData/applicationInfo';
 
-import ApplicantInfoSection from '@/UIComponents/Sections/ApplicantSections/applicantExpenditure'
-import type { IApplicant } from '@/app/appData/applicantInfo';
+import React, { useEffect, useState } from "react";
+import type { JSX } from "react";
+import type { Section } from "@/app/appData/sectionInfo";
+import type { formField } from "@/app/appData/applicationInfo";
+import type { IApplicant } from "@/app/appData/applicantInfo";
+
+import ApplicantExpenditure from "./ApplicantSections/applicantExpenditure"; 
+import { StaticData } from "@/lib/staticData"; 
+import type { ExpenditureType } from "@/lib/staticData"; 
 
 type DataAccess = {
-    application : formField[];
-    onchangeCall?: (...args: any[]) => void;
-    onvalidateCall?: (...args: any[]) => void;
-}
+  application: formField[];
+  onchangeCall?: (...args: any[]) => void;
+  onvalidateCall?: (...args: any[]) => void;
+};
+
 type Props = {
-    sectionInfo : Section;
-    dataAccess? : DataAccess;
-    applicantsInfo : Array<IApplicant>;
-}
+  sectionInfo: Section;
+  dataAccess?: DataAccess;
+  applicantsInfo: Array<IApplicant>;
+};
 
-const expenditure: React.FC<Props> = ({
-    sectionInfo, dataAccess,applicantsInfo,
-}) =>{
+const Expenditure: React.FC<Props> = ({ sectionInfo, dataAccess, applicantsInfo }) => {
+  const [expTypes, setExpTypes] = useState<ExpenditureType[] | null>(null); 
 
-    let ApplicantSections = [];
-    for(let i=0; i<4; i++){
-        ApplicantSections.push(
-            <ApplicantInfoSection
-                sectionInfo={sectionInfo}
-                dataAccess={dataAccess}
-                applicant={applicantsInfo[i]}/>)
-    }
+  useEffect(() => { 
+    let alive = true;
+    (async () => {
+      try {
+        const types = await StaticData.GetExpenditureTypes();
+        if (alive) setExpTypes(types);
+      } catch {
+        if (alive) setExpTypes([]);
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
 
-    if(dataAccess !== undefined)
-    {
-    return (
-         <div>
-            <div className="grid">
-                <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 4 of 5</span></h2>
-            </div>
-            <div className="grid">
-                <p></p>
-                <p><progress value={sectionInfo.percentageProgress} max="100" /></p>
-                <p></p>
-            </div>
+  if (!dataAccess) return null;
 
-            {ApplicantSections}
-         </div>
-    )
-    }
-}
+  const ApplicantSections: JSX.Element[] = [];
+  for (let i = 0; i < applicantsInfo.length; i++) {
+    const applicant = applicantsInfo[i];
+    ApplicantSections.push(
+      <ApplicantExpenditure
+        key={`exp-sec-${applicant.applicantId}`}
+        sectionInfo={sectionInfo}
+        dataAccess={dataAccess}
+        applicant={applicant}
+        expenditureTypes={expTypes ?? []}
+      />
+    );
+  }
 
-export default expenditure
+  return (
+    <div>
+      <div className="grid">
+        <h2>
+          {sectionInfo.sectionTitle} <span className="progressText">Step 4 of 5</span>
+        </h2>
+      </div>
+      <div className="grid">
+        <p></p>
+        <p><progress value={sectionInfo.percentageProgress} max="100" /></p>
+      </div>
+      {ApplicantSections}
+    </div>
+  );
+};
 
-    
+export default Expenditure;

@@ -6,8 +6,8 @@ const UpdateField = (
     updateApplicantData
     ) => {
 
-    const editCollection = [...affordabilityApplication];
-    const editApplicants = [...applicantData];
+    const editCollection = Array.isArray(affordabilityApplication) ? [...affordabilityApplication] : { ...affordabilityApplication};
+    const editApplicants = Array.isArray(applicantData) ? [applicantData] : applicantData ? [{...applicantData}] : [];
 
     if(e.target.name.includes("_")){
       let applicantIndex = parseInt(e.target.name.charAt(0));

@@ -9,6 +9,7 @@ import GenericRadioButtons from '../formControls/GenericRadioButtons';
 import ApplicantPersonalDetails from './ApplicantSections/applicantPersonalDetails';
 import StaticData from '@/app/appMethods/StaticData';
 import type { IApplicant } from '@/app/appData/applicantInfo';
+import type { JSX } from 'react';
 
 type DataAccess = {
     application : formField[];
@@ -18,23 +19,33 @@ type DataAccess = {
 type Props = {
     sectionInfo : Section;
     dataAccess? : DataAccess;
-    applicantsInfo : Array<IApplicant>;
+    applicantsInfo? : IApplicant[] | null;
 }
 
 
 const applicantInfo: React.FC<Props> = ({
     sectionInfo, dataAccess,applicantsInfo
 }) =>{
+    if(!dataAccess || !Array.isArray(dataAccess.application)){
+        return;
+    }
     if(dataAccess !== undefined)
     {
- 
-    let ApplicantSections = [];
-    for(let i=0; i<4; i++){
+    
+    const list: IApplicant[] = Array.isArray(applicantsInfo) ? applicantsInfo : [];
+    if(list.length ===0){
+        return <div/>;
+    }
+    let ApplicantSections : JSX.Element[] = [];;
+    for(let i=0; i<list.length; i++){
+        const applicant = list[i];
+        if(!applicant) continue;
         ApplicantSections.push(
             <ApplicantPersonalDetails
+                key={`applicant-${applicant.applicantId}`}
                 sectionInfo={sectionInfo}
                 dataAccess={dataAccess}
-                applicant={applicantsInfo[i]}/>)
+                applicant={applicant}/>)
         }
     return (
          <div>

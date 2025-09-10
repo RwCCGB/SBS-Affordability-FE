@@ -1,7 +1,7 @@
 import React from 'react';
 import type {DropDownItem} from '@/app/appData/DropDownItem';
 
-import StaticDataLib from "@/lib/staticData";
+import StaticDataLib, { IncomeCategory } from "@/lib/staticData";
 import expenditure from '@/UIComponents/Sections/expenditure';
 
 async function GetRegions() : Promise<DropDownItem[]>{
@@ -25,14 +25,13 @@ async function GetExpenditureTypes() : Promise<T[]>{
     }));
 }
 
-async function GetIncomeTypes(): Promise<T[]>{
+async function GetIncomeTypes(): Promise<IncomeCategory[]>{
     const incomeTypes = await StaticDataLib.GetIncomeTypes();
 
     return incomeTypes.map((income) => ({
         id: income.id,
-        type: income.Type,
-        text: income.Text,
-        subtext: income.SubText,
+        name: income.Text,
+        description: income.SubText,
     }));
 }
 
