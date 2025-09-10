@@ -25,7 +25,7 @@ import {
   toAffordabilityRequest,
   validateResult,
 } from "sbs-affordability-types";
-import { validateAffordabilityRequest } from "sbs-affordability-types";
+import type { validateAffordabilityRequest } from "sbs-affordability-types";
 
 export default function Home() {
   const [hasValidated,updateHasValidated] = useState(false);

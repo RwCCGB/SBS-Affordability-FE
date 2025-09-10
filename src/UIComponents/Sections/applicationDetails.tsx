@@ -61,7 +61,7 @@ const ApplicationDetails: React.FC<Props> = ({
          <div>
             <div className="grid">
                 
-                <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 1 of 5</span></h2>
+                <h2>{sectionInfo.sectionTitle} <span className="progressText">Step 1 of 4</span></h2>
                
             </div>
             <div className="grid">

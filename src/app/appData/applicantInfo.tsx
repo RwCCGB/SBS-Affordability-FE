@@ -7,12 +7,39 @@ export interface IApplicant {
 export interface IApplicantData {
     applicants:Array<IApplicant>
 }
-import type {formField} from "sbs-affordability-types/"
-//import type { formField } from '@/app/appData/applicationInfo';
+import type {formField} from "sbs-affordability-types"
+import { GetIncomeCategories, type IncomeCategory } from "@/lib/staticData";
 
-async function GetApplicantData(){
+function mapIncomeToFormField(dto: IncomeCategory, idx: number): formField{
+    return {
+        id: dto.id,
+        name: dto.name,
+        value: 0,
+        type: "number",
+        required: false,
+        minAmount:0,
+        maxAmount:10,
+        labelText:dto.name,
+        labelSubtext: dto.description?? "",
+        afterFieldText: "",
+        isValid: true,
+        errorMessage:'',
+        validationGroup:33
+    } as formField;
+}
+
+async function GetApplicantData() : Promise<IApplicant>{
     let applicantData: Array<IApplicant> = [];
-    
+    const applicants: IApplicant[] = [];
+    let incomeCats: IncomeCategory[] = [];
+    try{
+        incomeCats = await GetIncomeCategories();
+    }
+    catch(err){
+        console.log("Error GetApplicationData failed ", err);
+        incomeCats = [];
+    }
+   
     for (let appCnt = 0; appCnt < 4; appCnt++){
         let applicant = {} as IApplicant;
         applicant.applicantId = appCnt;
@@ -33,66 +60,68 @@ async function GetApplicantData(){
             validationGroup:22
         }
 
-        applicant.incomeData = [] as Array<formField>;
-        applicant.expenditureData = [] as Array<formField>;
+        applicant.incomeData = [];
+        applicant.expenditureData = [];
 
         // START HARD CODE INCOME
-        
-        
-        let incomeTyoe = {
-            id:555,
-            name:"pension",
+        for (let i = 0; i < incomeCats.length; i++){
+            applicant.incomeData.push(mapIncomeToFormField(incomeCats[i],i));
+        }
+
+        // END INCOME DATA HARDCODED 
+
+        // Start hard coded expenditure items
+        let expenditureItem = {
+            id:33,
+            name:"33",
             value:0,
             type:"number",
             required:false,
             minAmount:0,
-            maxAmount:10,
-            labelText:"Pension Main Label",
-            labelSubtext:"pension sub text",
+            maxAmount:100,
+            labelText:"Maintenance/Child Support",
+            labelSubtext:"",
             afterFieldText: "monthly",
             isValid: true,
             errorMessage:'',
             validationGroup:33
         } as formField;
 
-        let incomeTyoe2 = {
-            id:13,
-            name:"taxEvasion",
-            value:0,
-            type:"number",
-            required:false,
-            minAmount:0,
-            maxAmount:10,
-            labelText:"FROM ASYNC tax evasion Main Label",
-            labelSubtext:"tax evasion sub text",
-            afterFieldText: "for life",
-            isValid: true,
-            errorMessage:'',
-            validationGroup:33
-        } as formField;
-        
-        applicant.incomeData.push(incomeTyoe);
-        applicant.incomeData.push(incomeTyoe2);
-        // END INCOME DATA HARDCODED 
-
-        // Start hard coded expenditure items
-        let expenditureItem = {
+        let expenditureItem2 = {
             id:33,
-            name:"alcohol",
+            name:"33",
             value:0,
             type:"number",
             required:false,
             minAmount:0,
             maxAmount:100,
-            labelText:"Cans of strong cider cost per dayr",
-            labelSubtext:"This is a field to say how much you drink and how much it costs",
-            afterFieldText: "daiiy",
+            labelText:"Nursery/Child Care Costs",
+            labelSubtext:"Total child care costs including child care vouchers",
+            afterFieldText: "monthly",
+            isValid: true,
+            errorMessage:'',
+            validationGroup:33
+        } as formField;
+
+        let expenditureItem3 = {
+            id:33,
+            name:"33",
+            value:0,
+            type:"number",
+            required:false,
+            minAmount:0,
+            maxAmount:100,
+            labelText:"Tuition Fees",
+            labelSubtext:"",
+            afterFieldText: "monthly",
             isValid: true,
             errorMessage:'',
             validationGroup:33
         } as formField;
 
         applicant.expenditureData.push(expenditureItem);
+        applicant.expenditureData.push(expenditureItem2);
+        applicant.expenditureData.push(expenditureItem3);
         // End hard coded expenditure items.
 
         applicantData.push(applicant);
