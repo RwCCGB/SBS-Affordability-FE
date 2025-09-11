@@ -42,7 +42,7 @@ console.log(applicant);
     })
     return (
         <div>
-        <h3>Applicant Expenditure Info {applicant.applicantId}</h3>
+        <h3 className={'appHead'}>Applicant {applicant.applicantId + 1} Expenditure</h3>
         {controlItems}
         </div>
 ) 

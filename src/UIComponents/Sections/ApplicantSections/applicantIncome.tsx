@@ -42,7 +42,7 @@ const applicantIncome : React.FC<Props>= ({
     })
     return (
         <div>
-        <h3>Applicant Income Info {applicant.applicantId}</h3>
+        <h3 className={'appHead'}>Applicant {applicant.applicantId + 1} Income</h3>
         {controlItems}
         </div>
 ) 
