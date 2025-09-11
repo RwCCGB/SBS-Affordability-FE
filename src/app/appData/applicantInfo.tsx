@@ -73,7 +73,7 @@ async function GetApplicantData() : Promise<IApplicant>{
         // Start hard coded expenditure items
         let expenditureItem = {
             id:33,
-            name:"33",
+            name:"Maintenance/Child Support",
             value:0,
             type:"number",
             required:false,
@@ -88,8 +88,8 @@ async function GetApplicantData() : Promise<IApplicant>{
         } as formField;
 
         let expenditureItem2 = {
-            id:33,
-            name:"33",
+            id:34,
+            name:"Nursery/Child Care Costs",
             value:0,
             type:"number",
             required:false,
@@ -104,8 +104,8 @@ async function GetApplicantData() : Promise<IApplicant>{
         } as formField;
 
         let expenditureItem3 = {
-            id:33,
-            name:"33",
+            id:35,
+            name:"Tuition Fees",
             value:0,
             type:"number",
             required:false,

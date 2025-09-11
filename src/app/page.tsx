@@ -84,7 +84,7 @@ export default function Home() {
     if(isPageValid){
       let nextPage = currentSection + 1;
       updateCurrentSection(nextPage);
-      if(nextPage == 4){
+      if(nextPage == 3){
         ProcessAffordability();
       }
     }
@@ -100,23 +100,26 @@ export default function Home() {
         )
     }
   }
+  function getRandomInt(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+  }
 
   function ProcessAffordability()
   {
-    let requestObj;
-    
-    const request : affordabilityRequest = toAffordabilityRequest(
+    try{
+      const request : affordabilityRequest = toAffordabilityRequest(
       affordabilityApplication, applicantData);
-      console.log("Gonna test! ")
       console.log(request);
-      /*...then validate the resulting object against the zod schema*/
-      const validation : validateResult = 
-        validateAffordabilityRequest(request);
-      console.log(validation);
-      
-      updateMaxPermittedLoanAmount(56134)
-  }
+    }
+    catch(err){
 
+    }
+    
+    updateMaxPermittedLoanAmount(getRandomInt(100000,500000))
+  }
+  
   function convertToRequestObject(e : React.FormEvent<HTMLInputElement>){
     e.preventDefault();
     let requestObject = 
