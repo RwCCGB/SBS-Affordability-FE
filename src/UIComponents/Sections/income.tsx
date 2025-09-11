@@ -22,14 +22,16 @@ const income: React.FC<Props> = ({
 }) =>{
     let ApplicantSections = [];
     
-    for(let i=0; i<4; i++){
-        
+    //for(let i=0; i<4; i++){
+    let applicantCount = dataAccess?.application.filter(f => f.name == "numberOfApplicants");
+    for(let i=0; i<parseInt(applicantCount[0].value); i++){   
         ApplicantSections.push(
             <ApplicantInfoSection
                 sectionInfo={sectionInfo}
                 dataAccess={dataAccess}
                 applicant={applicantsInfo[i]}/>)
-    }
+        }
+    //}
 
     if(dataAccess !== undefined)
     {
